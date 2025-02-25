@@ -3,7 +3,7 @@ import aiohttp
 import logging
 import sys
 from os import getenv
-
+from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher, html
 from aiogram.client.default import DefaultBotProperties
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
@@ -13,6 +13,7 @@ from aiogram.types import Message
 from aiocache import cached
 
 # Токен Telegram-бота и API-ключ OpenWeather
+load_dotenv()
 OPENWEATHER_API_KEY = getenv("API_KEY")
 TOKEN = getenv("BOT_TOKEN")
 
@@ -75,8 +76,7 @@ async def get_weather(city: str) -> str:
 async def start_command(message: Message):
   keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="Москва", callback_data="weather Москва")],
-        [InlineKeyboardButton(text="Санкт-Петербург", callback_data="weather Санкт-Петербург")],
-        [InlineKeyboardButton(text="Новосибирск", callback_data="weather Новосибирск")]
+        [InlineKeyboardButton(text="Санкт-Петербург", callback_data="weather Санкт-Петербург")]
     ])
   await message.answer(
     f"Привет, {html.bold(message.from_user.first_name)}!\n"
@@ -93,11 +93,9 @@ async def handle_callback(query):
 @dp.message()
 async def weather_handler(message: Message):
   city = message.text.strip()
-  if not city.isalpha():
-    await message.answer("Пожалуйста, введите корректное название города.")
   weather_info = await get_weather(city)
   logging.info(f"Запрос погоды для города: {city}")
-  wait message.answer(weather_info)
+  await message.answer(weather_info)
 
 # Основная функция для запуска бота
 async def main() -> None:
