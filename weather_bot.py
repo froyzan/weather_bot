@@ -49,10 +49,7 @@ async def get_weather(city: str) -> str:
             "Snow": "\U0001F328",
             "Mist": "\U0001F32B"}                 
                   
-          if weather_description in code_to_smile:
-            wd = code_to_smile[weather_description]
-          else:
-            wd = "\U0001F52D"
+          wd = code_to_smile.get(weather_description, "\U0001F52D")
 
           return (f"Погода в городе {city.capitalize()}:\n"
                   f"Температура: {temp:.0f}°C\n"
@@ -64,12 +61,14 @@ async def get_weather(city: str) -> str:
         elif response.status == 404:
           return "Город не найден. Проверьте название."
         else:
+          logging.error(f"Ошибка на стороне сервера: {response.status}")
           return "Ошибка на стороне сервера. Попробуйте позже."
               
   except aiohttp.ClientError as e:
     logging.error(f"Ошибка при запросе к OpenWeather API: {e}")
     return "Не удалось получить данные о погоде. Проверьте подключение к интернету."
   except asyncio.TimeoutError:
+    logging.error("Превышено время ожидания ответа от сервера.")
     return "Превышено время ожидания ответа от сервера."
 
 # Обработчик команды /start
@@ -84,7 +83,7 @@ async def start_command(message: Message):
     f"Введи название города или выбери из списка ниже:",
     reply_markup=keyboard,)
 
-#Обработки callback-запросов от кнопок, созданных с помощью InlineKeyboardMarkup
+# Обработчик callback-запросов от кнопок, созданных с помощью InlineKeyboardMarkup
 @dp.callback_query()
 async def handle_callback(query):
   city = query.data.split()[1]
