@@ -84,6 +84,7 @@ async def start_command(message: Message):
     f"Введи название города или выбери из списка ниже:",
     reply_markup=keyboard,)
 
+#Обработки callback-запросов от кнопок, созданных с помощью InlineKeyboardMarkup
 @dp.callback_query()
 async def handle_callback(query):
   city = query.data.split()[1]
