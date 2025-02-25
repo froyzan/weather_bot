@@ -27,6 +27,7 @@ dp = Dispatcher()
 async def get_weather(city: str) -> str:
   url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={OPENWEATHER_API_KEY}&units=metric&lang=ru"
   try:
+    logging.info(f"Запрос погоды для города: {city}")
     async with aiohttp.ClientSession() as session:
       async with session.get(url) as response:
         if response.status == 200:
@@ -94,7 +95,6 @@ async def handle_callback(query):
 async def weather_handler(message: Message):
   city = message.text.strip()
   weather_info = await get_weather(city)
-  logging.info(f"Запрос погоды для города: {city}")
   await message.answer(weather_info)
 
 # Основная функция для запуска бота

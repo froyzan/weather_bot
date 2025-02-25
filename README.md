@@ -6,6 +6,8 @@
 2. Библиотеки Python:
   - aiogram
   - aiohttp
+  - aiocache
+  - python-dotenv
 3. API-ключи:
   - Telegram Bot Token (получить у @BotFather).
   - OpenWeather API Key (зарегистрироваться на OpenWeather и получить ключ).
