@@ -73,6 +73,7 @@ WantedBy=multi-user.target
 ```
 </details>
 <p>
+
 3. Обновляем systemd и включаем сервис:
 ```bash
 systemctl daemon-reload
