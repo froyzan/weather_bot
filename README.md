@@ -51,7 +51,8 @@ sudo passwd weather_bot
 ```
 2. Создадим службу `weather_bot.service`
 <details>
-  <summary>Итоговая версия `/etc/systemd/system/weather_bot.service`</summary>
+  <summary>Версия `/etc/systemd/system/weather_bot.service`</summary>
+
 ```bash
 [Unit]
 Description=Telegram Bot
