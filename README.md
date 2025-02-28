@@ -13,17 +13,17 @@
   - OpenWeather API Key (зарегистрироваться на OpenWeather и получить ключ).
 
 ## 🚀 Установка и запуск
-1. Установите зависимости
+1. Установим зависимости
 ```bash
 pip install -r requirements.txt
 ```
-2. Настройте переменные окружения
+2. Настроим переменные окружения
 Создайте файл .env в корневой директории проекта и добавьте следующие строки:
 ```text
 BOT_TOKEN=ваш_токен_бота_из_BotFather
 API_KEY=ваш_ключ_OpenWeather
 ```
-3. Запустите бота
+3. Запустим бота
 ```bash
 python3 weather_bot.py
 ```
@@ -43,3 +43,38 @@ python3 weather_bot.py
 Скорость ветра: 5 м/с
 ```
 
+## Создание службы
+1. Создадим пользователя `weather_bot` и зададим пароль
+```bash
+sudo useradd -m weather_bot
+sudo passwd weather_bot
+```
+2. Создадим службу `weather_bot.service`
+<details>
+  <summary>Итоговая версия `/etc/systemd/system/weather_bot.service`</summary>
+```bash
+[Unit]
+Description=Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+User=weather_bot
+WorkingDirectory=/opt/weather_bot
+ExecStart=/opt/weather_bot/venv/bin/python3 weather_bot.py
+Restart=always
+RestartSec=10s
+StandardOutput=append:/var/log/weather_bot.log
+StandardError=append:/var/log/weather_bot.log
+
+[Install]
+WantedBy=multi-user.target
+```
+</details>
+
+3. Обновляем systemd и включаем сервис:
+```bash
+systemctl daemon-reload
+systemctl enable weather_bot
+systemctl start weather_bot
+```
