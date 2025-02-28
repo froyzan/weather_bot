@@ -71,7 +71,7 @@ StandardError=append:/var/log/weather_bot.log
 WantedBy=multi-user.target
 ```
 </details>
-
+<p>
 3. Обновляем systemd и включаем сервис:
 ```bash
 systemctl daemon-reload
