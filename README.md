@@ -49,7 +49,15 @@ python3 weather_bot.py
 sudo useradd -m weather_bot
 sudo passwd weather_bot
 ```
-2. Создадим службу `weather_bot.service`
+2. Создадим папку и настроим виртуальноу окружение
+```bash
+mkdir -p /opt/weather_bot
+cd /opt/weather_bot
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+3. Создадим службу `weather_bot.service`
 <details>
   <summary>Версия `/etc/systemd/system/weather_bot.service`</summary>
 
@@ -74,7 +82,7 @@ WantedBy=multi-user.target
 </details>
 <p>
 
-3. Обновляем systemd и включаем сервис:
+4. Обновляем systemd и включаем сервис:
 ```bash
 systemctl daemon-reload
 systemctl enable weather_bot
